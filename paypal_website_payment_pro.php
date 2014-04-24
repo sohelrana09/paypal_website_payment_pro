@@ -17,7 +17,6 @@ class paypal_website_payment_pro
 		$this->API_USERNAME = $API_USERNAME;
 		$this->API_PASSWORD = $API_PASSWORD;
 		$this->API_SIGNATURE = $API_SIGNATURE;
-		$this->API_ENDPOINT = 'https://api-3t.sandbox.paypal.com/nvp';
 		$this->USE_PROXY = $USE_PROXY;
 		if($this->USE_PROXY == true)
 		{
@@ -32,10 +31,12 @@ class paypal_website_payment_pro
 		if($IS_ONLINE == FALSE)
 		{
 			$this->PAYPAL_URL = 'https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token=';
+            $this->API_ENDPOINT = 'https://api-3t.sandbox.paypal.com/nvp';
 		}
 		else
 		{
 			$this->PAYPAL_URL = 'https://www.paypal.com/webscr&cmd=_express-checkout&token=';
+            $this->API_ENDPOINT = 'https://api-3t.paypal.com/nvp';
 		}
 		$this->VERSION = $VERSION;
 	}

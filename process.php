@@ -1,13 +1,14 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en">
  <head>
-
+     <title>Process : Paypal Website Payments Pro integration</title>
  </head>
  <body>
  <table border='0' width='40%' cellspacing='2' cellpadding='2' align="center">
 <?php
+require_once("config.php");
 require_once("paypal_website_payment_pro.php");
+
 $firstName =urlencode( $_POST['firstName']);
 $lastName =urlencode( $_POST['lastName']);
 $creditCardType =urlencode( $_POST['creditCardType']);
@@ -47,10 +48,17 @@ else
 $nvpstr='&PAYMENTACTION='.$paymentAction.'&AMT='.$amount.'&CREDITCARDTYPE='.$creditCardType.'&ACCT='.$creditCardNumber.'&EXPDATE='.         $padDateMonth.$expDateYear.'&CVV2='.$cvv2Number.'&FIRSTNAME='.$firstName.'&LASTNAME='.$lastName.'&STREET='.$address1.'&CITY='.$city.'&STATE='.$state.'&ZIP='.$zip.'&COUNTRYCODE=US&CURRENCYCODE='.$currencyCode.$nvpRecurring;
 
 
-$paypal_website_payment_pro = new paypal_website_payment_pro('sohelrana09_bussiness_api1.gmail.com', '1374079250', 'AFcWxV21C7fd0v3bYYYRCpSSRl31AbYPHe0HeaaCOmxal0M4raFVpyVj', '', '', FALSE, FALSE );
+$paypal_website_payment_pro = new paypal_website_payment_pro($config['username'], $config['password'], $config['signature'], '', '', $config['isOnline'], FALSE );
 $resArray = $paypal_website_payment_pro->hash_call($methodToCall,$nvpstr);
-$ack = strtoupper($resArray["ACK"]);
-if($ack!="SUCCESS")
+$error = true;
+if(isset($resArray["ACK"])) {
+    $ack = strtoupper($resArray["ACK"]);
+    if($ack=="SUCCESS") {
+        $error = false;
+    }
+}
+
+if($error)
 {
 	echo '<tr>';
 		echo '<td colspan="2" style="font-weight:bold;color:red;" align="center">Error! Please check that u will provide all information correctly.</td>';
